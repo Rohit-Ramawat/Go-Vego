@@ -8,4 +8,5 @@ public class Vegetable {
 	private double price;
 	private int quantity;
 	
+	
 }
