@@ -1,5 +1,8 @@
 package com.masai.entity;
 
+import jakarta.persistence.Embeddable;
+
+@Embeddable
 public class Address {
 	
 	private String flatNo;

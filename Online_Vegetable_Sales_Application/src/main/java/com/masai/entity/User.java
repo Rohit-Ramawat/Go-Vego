@@ -1,13 +1,20 @@
 package com.masai.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User {
 	@Id 
+	@Column(unique = true, length = 50)	//this is for making it unique
 	private String userId;
+	@Column(nullable = false, length = 50)
 	private String password;
+	@Column(nullable = false, length = 50)
 	private String role;
 	
 	public User() {
