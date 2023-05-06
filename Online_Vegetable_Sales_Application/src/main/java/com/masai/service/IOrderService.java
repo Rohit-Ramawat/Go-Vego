@@ -3,17 +3,19 @@ package com.masai.service;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.masai.entity.Order;
+import com.masai.entity.OrderTable;
+
+
 
 
 
 public interface IOrderService {
 	
-	public Order addOrder(Order order);
-	public Order updateOrderDetails(Order order);
-	public Order viewOrder(Order order);
-	public List<Order> viewAllOrders(int customerId);
-	public List<Order> viewAllOrders(LocalDate date);
-	public List<Order> viewOrderList();
-	public Order cancelOrder(int orderId);
+	public OrderTable addOrder(OrderTable order);
+	public OrderTable updateOrderDetails(OrderTable order);
+	public OrderTable viewOrder(OrderTable order);
+	public List<OrderTable> viewAllOrders(int customerId);
+	public List<OrderTable> viewAllOrders(LocalDate date);
+	public List<OrderTable> viewOrderList();
+	public OrderTable cancelOrder(int orderId);
 }

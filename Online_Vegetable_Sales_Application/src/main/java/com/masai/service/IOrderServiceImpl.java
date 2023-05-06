@@ -3,48 +3,48 @@ package com.masai.service;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.masai.entity.Order;
+import com.masai.entity.OrderTable;
 
 public class IOrderServiceImpl implements IOrderService {
 
 	@Override
-	public Order addOrder(Order order) {
+	public OrderTable addOrder(OrderTable order) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Order updateOrderDetails(Order order) {
+	public OrderTable updateOrderDetails(OrderTable order) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Order viewOrder(Order order) {
+	public OrderTable viewOrder(OrderTable order) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Order> viewAllOrders(int customerId) {
+	public List<OrderTable> viewAllOrders(int customerId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Order> viewAllOrders(LocalDate date) {
+	public List<OrderTable> viewAllOrders(LocalDate date) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Order> viewOrderList() {
+	public List<OrderTable> viewOrderList() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Order cancelOrder(int orderId) {
+	public OrderTable cancelOrder(int orderId) {
 		// TODO Auto-generated method stub
 		return null;
 	}

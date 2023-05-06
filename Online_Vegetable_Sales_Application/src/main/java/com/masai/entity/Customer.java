@@ -13,8 +13,7 @@ import jakarta.persistence.OneToMany;
 
 @Entity 
 public class Customer extends User{
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(nullable = false,unique = true)
 	private int customerId;
 	@Column(nullable = false, length = 50)
 	private String name;
@@ -33,7 +32,7 @@ public class Customer extends User{
 	private int isDeleted;
 	
 	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-	private List<Order> orders;
+	private List<OrderTable> orders;
 	
 	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
 	private List<BillingDetails> billingDetails;
@@ -52,7 +51,7 @@ public class Customer extends User{
 	}
 
 	public Customer(String name, String mobileNumber, Address address, String emailId, String password,
-			String confirmPassword, List<Order> orders, List<BillingDetails> billingDetails, List<Cart> carts,
+			String confirmPassword, List<OrderTable> orders, List<BillingDetails> billingDetails, List<Cart> carts,
 			List<Feedback> feedbacks) {
 		super();
 		this.name = name;
@@ -123,11 +122,11 @@ public class Customer extends User{
 		this.confirmPassword = confirmPassword;
 	}
 
-	public List<Order> getOrders() {
+	public List<OrderTable> getOrders() {
 		return orders;
 	}
 
-	public void setOrders(List<Order> orders) {
+	public void setOrders(List<OrderTable> orders) {
 		this.orders = orders;
 	}
 

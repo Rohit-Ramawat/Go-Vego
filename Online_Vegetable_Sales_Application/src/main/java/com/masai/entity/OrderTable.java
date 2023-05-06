@@ -18,7 +18,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 @Entity
-public class Order {
+public class OrderTable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,12 +39,12 @@ public class Order {
 	@OneToMany(mappedBy = "order")
     private List<BillingDetails> billingDetailsList = new ArrayList<>();
 
-	public Order() {
+	public OrderTable() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Order(Customer customer, Set<Vegetable> vegetableList, double totalAmount, String status,
+	public OrderTable(Customer customer, Set<Vegetable> vegetableList, double totalAmount, String status,
 			List<BillingDetails> billingDetailsList) {
 		super();
 		this.customer = customer;

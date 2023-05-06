@@ -5,12 +5,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.MappedSuperclass;
 
-@Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+@MappedSuperclass
 public class User {
 	@Id 
-	@Column(unique = true, length = 50)	//this is for making it unique
+	@Column(length = 50)	
 	private String userId;
 	@Column(nullable = false, length = 50)
 	private String password;

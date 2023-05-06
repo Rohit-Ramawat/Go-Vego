@@ -2,6 +2,8 @@ package com.masai.entity;
 
 import java.util.Set;
 
+
+
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -18,13 +20,15 @@ public class Cart {
 	@GeneratedValue(strategy = GenerationType.IDENTITY )
 	private int cartId;
 	
-	@Embedded
-	@ElementCollection
-	private Set<Vegetable> vegetableList;
+	
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "customer_id")
 	private Customer customer;
+	
+	@Embedded
+	@ElementCollection
+	private Set<Vegetable> vegetableList;
 
 	public Cart() {
 		super();
