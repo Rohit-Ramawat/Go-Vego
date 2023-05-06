@@ -9,7 +9,7 @@ public class EmUtils {
 	static EntityManagerFactory emf;
 	
 	static {
-		emf = Persistence.createEntityManagerFactory("vegetableConnect"); 
+		emf = Persistence.createEntityManagerFactory("vegetableConnect");
 	}
 	
 	public static EntityManager getEntityManager() {

@@ -3,6 +3,8 @@ package com.masai.entity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import com.masai.entity.OrderTable;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -20,7 +22,7 @@ public class BillingDetails {
 	
 	@ManyToOne
     @JoinColumn(name = "order_id")
-    private Order order;
+    private OrderTable order;
 	
 	@Column(nullable = false, length = 50)
 	private String transactionMode;
@@ -39,7 +41,7 @@ public class BillingDetails {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public BillingDetails(Order order, String transactionMode, LocalDateTime transactionDate, String transactionStatus,
+	public BillingDetails(OrderTable order, String transactionMode, LocalDateTime transactionDate, String transactionStatus,
 			Address billingAddress, Customer customer) {
 		super();
 		this.order = order;
@@ -58,11 +60,11 @@ public class BillingDetails {
 		this.billingId = billingId;
 	}
 
-	public Order getOrder() {
+	public OrderTable getOrder() {
 		return order;
 	}
 
-	public void setOrder(Order order) {
+	public void setOrder(OrderTable order) {
 		this.order = order;
 	}
 

@@ -8,8 +8,8 @@ import jakarta.persistence.Id;
 
 @Entity
 public class Admin extends User{
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	
+	@Column(nullable = false,unique = true)
 	private int adminId;
 	@Column(nullable = false, length = 50)
 	private String name;
@@ -17,19 +17,23 @@ public class Admin extends User{
 	private String contactNumber;
 	@Column(nullable = false, length = 50)
 	private String emailId;
-	@Column(name = "is_deleted", nullable = false)
+	@Column(name = "is_deleted")
 	private int isDeleted;
+	@Column(name = "is_approved")
+	private int isApproved;
 	
 	public Admin() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Admin(String userId, String password, String role, String name, String contactNumber, String emailId) {
+	public Admin(String userId, String password, String role,int adminId, String name, String contactNumber, String emailId) {
 		super(userId, password, role);
+		this.adminId = adminId;
 		this.name = name;
 		this.contactNumber = contactNumber;
 		this.emailId = emailId;
+		
 	}
 
 	public int getAdminId() {
@@ -70,6 +74,14 @@ public class Admin extends User{
 
 	public void setIsDeleted(int isDeleted) {
 		this.isDeleted = isDeleted;
+	}
+
+	public int getIsApproved() {
+		return isApproved;
+	}
+
+	public void setIsApproved(int isApproved) {
+		this.isApproved = isApproved;
 	}
 
 	@Override
