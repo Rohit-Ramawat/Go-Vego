@@ -6,7 +6,7 @@ public class ILoginServiceImpl implements ILoginService {
 
 	@Override
 	public User validateLogin(User user) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

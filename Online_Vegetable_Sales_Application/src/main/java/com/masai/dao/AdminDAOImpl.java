@@ -56,7 +56,7 @@ public class AdminDAOImpl implements AdminDAO {
 	}
 
 	@Override
-	public void approveAdmin(Admin admin) throws AdminException {
+	public void approveAdminDB(Admin admin) throws AdminException {
 		EntityManager em = EmUtils.getEntityManager();
 		EntityTransaction et = em.getTransaction();
 		try {
@@ -73,4 +73,99 @@ public class AdminDAOImpl implements AdminDAO {
 		}
 	}
 
+	@Override
+	public void updateAdminPasswordDB(Admin admin, String newPass) throws AdminException {
+		EntityManager em = EmUtils.getEntityManager();
+		EntityTransaction et = em.getTransaction();
+		try {
+			
+			et.begin();
+			admin.setPassword(newPass);
+			em.merge(admin); // persist changes to the database
+			et.commit();
+			
+		} catch (PersistenceException e) {
+			throw new AdminException("Unable to process request try again"); 
+		}finally {
+			em.close();
+		}
+		
+	}
+
+	@Override
+	public void updateAdminContactInfoDB(Admin admin, String newContact) throws AdminException {
+		EntityManager em = EmUtils.getEntityManager();
+		EntityTransaction et = em.getTransaction();
+		try {
+			
+			et.begin();
+			admin.setContactNumber(newContact);
+			em.merge(admin); // persist changes to the database
+			et.commit();
+			
+		} catch (PersistenceException e) {
+			throw new AdminException("Unable to process request try again"); 
+		}finally {
+			em.close();
+		}
+		
+	}
+
+	@Override
+	public void updateAdminEmailDB(Admin admin, String newEmail) throws AdminException {
+		EntityManager em = EmUtils.getEntityManager();
+		EntityTransaction et = em.getTransaction();
+		try {
+			
+			et.begin();
+			admin.setEmailId(newEmail);
+			em.merge(admin); // persist changes to the database
+			et.commit();
+			
+		} catch (PersistenceException e) {
+			throw new AdminException("Unable to process request try again"); 
+		}finally {
+			em.close();
+		}
+		
+	}
+
+	@Override
+	public void updateAdminNameDB(Admin admin, String newName) throws AdminException {
+		EntityManager em = EmUtils.getEntityManager();
+		EntityTransaction et = em.getTransaction();
+		try {
+			
+			et.begin();
+			admin.setName(newName);
+			em.merge(admin); // persist changes to the database
+			et.commit();
+			
+		} catch (PersistenceException e) {
+			throw new AdminException("Unable to process request try again"); 
+		}finally {
+			em.close();
+		}
+		
+	}
+
+	@Override
+	public void removeAdminDB(Admin admin) throws AdminException {
+		EntityManager em = EmUtils.getEntityManager();
+		EntityTransaction et = em.getTransaction();
+		try {
+			
+			et.begin();
+			if (!em.contains(admin)) {
+				admin = em.merge(admin); // re-attach the entity to the persistence context
+			}
+			em.remove(admin);
+			et.commit();
+			
+		} catch (PersistenceException e) {
+			throw new AdminException("Unable to process request try again"); 
+		}finally {
+			em.close();
+		}
+	}
 }

@@ -17,8 +17,6 @@ public class Admin extends User{
 	private String contactNumber;
 	@Column(nullable = false, length = 50)
 	private String emailId;
-	@Column(name = "is_deleted")
-	private int isDeleted;
 	@Column(name = "is_approved")
 	private int isApproved;
 	
@@ -66,14 +64,6 @@ public class Admin extends User{
 
 	public void setEmailId(String emailId) {
 		this.emailId = emailId;
-	}
-	
-	public int getIsDeleted() {
-		return isDeleted;
-	}
-
-	public void setIsDeleted(int isDeleted) {
-		this.isDeleted = isDeleted;
 	}
 
 	public int getIsApproved() {

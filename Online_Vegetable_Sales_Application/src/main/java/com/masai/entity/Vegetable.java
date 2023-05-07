@@ -3,11 +3,18 @@ package com.masai.entity;
 import java.util.Objects;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToOne;
 
-@Embeddable
+@Entity 
 public class Vegetable {
-	@Column(nullable = false)
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int vegId;
 	@Column(nullable = false, length = 50)
 	private String name;
@@ -18,6 +25,13 @@ public class Vegetable {
 	@Column(nullable = false)
 	private int quantity;
 	
+	@ManyToOne
+	@JoinTable(name = "order_id")
+	private OrderTable order;
+	
+	@ManyToOne
+	@JoinTable(name = "cart_id")
+	private Cart cart;
 	
 	@Override
 	public int hashCode() {
@@ -42,9 +56,8 @@ public class Vegetable {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Vegetable(int vegId, String name, String type, double price, int quantity) {
+	public Vegetable(String name, String type, double price, int quantity) {
 		super();
-		this.vegId = vegId;
 		this.name = name;
 		this.type = type;
 		this.price = price;
@@ -91,6 +104,18 @@ public class Vegetable {
 		this.quantity = quantity;
 	}
 	
+	public OrderTable getOrder() {
+		return order;
+	}
+	public void setOrder(OrderTable order) {
+		this.order = order;
+	}
+	public Cart getCart() {
+		return cart;
+	}
+	public void setCart(Cart cart) {
+		this.cart = cart;
+	}
 	@Override
 	public String toString() {
 		return "Vegetable [vegId=" + vegId + ", name=" + name + ", type=" + type + ", price=" + price + ", quantity="

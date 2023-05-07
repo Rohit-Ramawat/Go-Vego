@@ -3,14 +3,19 @@ package com.masai.service;
 import java.util.List;
 
 import com.masai.entity.Vegetable;
+import com.masai.exception.VegetableException;
+import com.masai.exception.VegetableNotFoundException;
 
 public interface IVegetableMgmtService {
 	
-	public Vegetable addVegetable(Vegetable veg);
-	public Vegetable updateVegetable(Vegetable veg);
-	public Vegetable removeVegetable(Vegetable veg);
-	public List<Vegetable> viewAllVegetavles();
-	public List<Vegetable> viewVegetableList(String category);
-	public List<Vegetable> viewAllVegetablesByName(String name);
-	
+	public void addVegetable(Vegetable veg);
+	public void removeVegetable(Vegetable veg);
+	public List<Vegetable> viewAllVegetavles() throws VegetableException, VegetableNotFoundException;
+	public List<Vegetable> viewAllVegetableByCategory(String category) throws VegetableException, VegetableNotFoundException;
+	public List<Vegetable> viewAllVegetablesByName(String name)throws VegetableException, VegetableNotFoundException;
+	public Vegetable viewVegetableById(int vegId);
+	public void updateVegetableName(Vegetable vegetable, String name);
+	public void updateVegetableType(Vegetable vegetable, String type);
+	public void updateVegetablePrice(Vegetable vegetable, double price);
+	public void updateVegetableQty(Vegetable vegetable, int quantity);
 }
