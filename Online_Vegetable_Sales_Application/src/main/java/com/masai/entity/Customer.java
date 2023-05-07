@@ -24,9 +24,7 @@ public class Customer extends User{
 	@Column(nullable = false, length = 50)
 	private String emailId;
 	@Column(nullable = false, length = 50)
-	private String password;
-	@Column(nullable = false, length = 50)
-	private String confirmPassword;
+	private String emailPassword;
 	
 	@Column(name = "is_deleted", nullable = false)
 	private int isDeleted;
@@ -43,23 +41,22 @@ public class Customer extends User{
 	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
 	private List<Feedback> feedbacks;
 	
-	
-	
 	public Customer() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Customer(String name, String mobileNumber, Address address, String emailId, String password,
-			String confirmPassword, List<OrderTable> orders, List<BillingDetails> billingDetails, List<Cart> carts,
-			List<Feedback> feedbacks) {
-		super();
+	public Customer(String userId, String password, String role, int customerId, String name, String mobileNumber,
+			Address address, String emailId, String emailPassword, int isDeleted, List<OrderTable> orders,
+			List<BillingDetails> billingDetails, List<Cart> carts, List<Feedback> feedbacks) {
+		super(userId, password, role);
+		this.customerId = customerId;
 		this.name = name;
 		this.mobileNumber = mobileNumber;
 		this.address = address;
 		this.emailId = emailId;
-		this.password = password;
-		this.confirmPassword = confirmPassword;
+		this.emailPassword = emailPassword;
+		this.isDeleted = isDeleted;
 		this.orders = orders;
 		this.billingDetails = billingDetails;
 		this.carts = carts;
@@ -106,20 +103,12 @@ public class Customer extends User{
 		this.emailId = emailId;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getEmailPassword() {
+		return emailPassword;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getConfirmPassword() {
-		return confirmPassword;
-	}
-
-	public void setConfirmPassword(String confirmPassword) {
-		this.confirmPassword = confirmPassword;
+	public void setEmailPassword(String emailPassword) {
+		this.emailPassword = emailPassword;
 	}
 
 	public List<OrderTable> getOrders() {
@@ -165,7 +154,7 @@ public class Customer extends User{
 	@Override
 	public String toString() {
 		return "Customer [customerId=" + customerId + ", name=" + name + ", mobileNumber=" + mobileNumber + ", address="
-				+ address + ", emailId=" + emailId + ", password=" + password + ", confirmPassword=" + confirmPassword
+				+ address + ", emailId=" + emailId + ", email Password =" + emailPassword 
 				+ ", orders=" + orders + ", billingDetails=" + billingDetails + ", carts=" + carts + ", feedbacks="
 				+ feedbacks + "]";
 	}

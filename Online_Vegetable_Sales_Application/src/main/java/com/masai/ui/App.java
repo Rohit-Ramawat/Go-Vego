@@ -20,21 +20,21 @@ public class App
     		System.out.println("4. Customer Login");
     		System.out.println("5. Customer Registration");
     		System.out.println("0. Exit");
-    		System.out.print("Enter Selection ");
+    		System.out.print("Enter Selection : ");
     		choice = sc.nextInt();
     		switch(choice) {
     			case 1:
     				try {
-    					AdminUI.adminLogin(sc);
+    					AdminUI.adminLoginUI(sc);
     				} catch (AdminException e) {
     					System.out.println(e.getMessage());
     				}
     				break;
     			case 2:
-    				AdminUI.adminRegistration(sc);
+    				AdminUI.adminRegistrationUI(sc);
     				break;
     			case 3:
-    				AdminUI.adminApproval(sc);
+    				AdminUI.adminApprovalUI(sc);
     				break;	
     			case 4:
     				CustomerUI.userLogin(sc);

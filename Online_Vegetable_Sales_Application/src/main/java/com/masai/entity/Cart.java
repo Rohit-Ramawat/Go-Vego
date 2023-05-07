@@ -13,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity 
 public class Cart {
@@ -20,14 +21,11 @@ public class Cart {
 	@GeneratedValue(strategy = GenerationType.IDENTITY )
 	private int cartId;
 	
-	
-	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "customer_id")
 	private Customer customer;
 	
-	@Embedded
-	@ElementCollection
+	@OneToMany(mappedBy = "cart")
 	private Set<Vegetable> vegetableList;
 
 	public Cart() {
@@ -35,10 +33,12 @@ public class Cart {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Cart(Set<Vegetable> vegetableList, Customer customer) {
+
+	public Cart(int cartId, Customer customer, Set<Vegetable> vegetableList) {
 		super();
-		this.vegetableList = vegetableList;
+		this.cartId = cartId;
 		this.customer = customer;
+		this.vegetableList = vegetableList;
 	}
 
 	public int getCartId() {
@@ -65,6 +65,8 @@ public class Cart {
 		this.customer = customer;
 	}
 
+	
+	
 	@Override
 	public String toString() {
 		return "Cart [cartId=" + cartId + ", vegetableList=" + vegetableList + ", customer=" + customer + "]";

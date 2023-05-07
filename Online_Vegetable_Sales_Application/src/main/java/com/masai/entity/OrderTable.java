@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -28,9 +26,9 @@ public class OrderTable {
 	@JoinColumn(name = "customer_id")
 	private Customer customer;
 	
-	@Embedded
-	@ElementCollection
+	@OneToMany(mappedBy = "order")
 	private Set<Vegetable> vegetableList; 
+	
 	@Column(nullable = false)
 	private double totalAmount;
 	@Column(nullable = false, length = 50)
@@ -44,9 +42,10 @@ public class OrderTable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public OrderTable(Customer customer, Set<Vegetable> vegetableList, double totalAmount, String status,
+	public OrderTable(int orderId, Customer customer, Set<Vegetable> vegetableList, double totalAmount, String status,
 			List<BillingDetails> billingDetailsList) {
 		super();
+		this.orderId = orderId;
 		this.customer = customer;
 		this.vegetableList = vegetableList;
 		this.totalAmount = totalAmount;
@@ -102,6 +101,8 @@ public class OrderTable {
 		this.billingDetailsList = billingDetailsList;
 	}
 
+	
+	
 	@Override
 	public String toString() {
 		return "Order [orderId=" + orderId + ", customer=" + customer + ", vegetableList=" + vegetableList
