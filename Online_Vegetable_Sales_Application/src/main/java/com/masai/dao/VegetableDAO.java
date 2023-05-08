@@ -28,4 +28,6 @@ public interface VegetableDAO {
 	public List<Vegetable> viewAllVegetableByCategoryDB(String category)throws VegetableException, VegetableNotFoundException;
 
 	public List<Vegetable> viewAllVegetableByNameDB(String name)throws VegetableException, VegetableNotFoundException;
+
+	public Vegetable viewVegetableByNameDB(String name) throws VegetableException, VegetableNotFoundException;
 }

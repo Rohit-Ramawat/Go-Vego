@@ -1,10 +1,9 @@
 package com.masai.entity;
 
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 
-import com.masai.entity.OrderTable;
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -13,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class BillingDetails {
@@ -20,7 +20,7 @@ public class BillingDetails {
 	@GeneratedValue(strategy = GenerationType.IDENTITY )
 	private int billingId;
 	
-	@ManyToOne
+	@OneToOne
     @JoinColumn(name = "order_id")
     private OrderTable order;
 	
@@ -32,7 +32,7 @@ public class BillingDetails {
 	private String transactionStatus;
 	private Address billingAddress;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "customer_id")
 	private Customer customer;
 	

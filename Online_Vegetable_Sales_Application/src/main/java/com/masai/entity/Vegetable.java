@@ -1,13 +1,16 @@
 package com.masai.entity;
 
 import java.util.Objects;
+import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 
 @Entity 
@@ -25,13 +28,8 @@ public class Vegetable {
 	@Column(nullable = false)
 	private int quantity;
 	
-	@ManyToOne
-	@JoinTable(name = "order_id")
-	private OrderTable order;
-	
-	@ManyToOne
-	@JoinTable(name = "cart_id")
-	private Cart cart;
+	@ManyToMany(mappedBy = "vegetableList",cascade = CascadeType.ALL)
+	private Set<OrderTable> orderSet;
 	
 	@Override
 	public int hashCode() {
@@ -103,19 +101,7 @@ public class Vegetable {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-	
-	public OrderTable getOrder() {
-		return order;
-	}
-	public void setOrder(OrderTable order) {
-		this.order = order;
-	}
-	public Cart getCart() {
-		return cart;
-	}
-	public void setCart(Cart cart) {
-		this.cart = cart;
-	}
+
 	@Override
 	public String toString() {
 		return "Vegetable [vegId=" + vegId + ", name=" + name + ", type=" + type + ", price=" + price + ", quantity="

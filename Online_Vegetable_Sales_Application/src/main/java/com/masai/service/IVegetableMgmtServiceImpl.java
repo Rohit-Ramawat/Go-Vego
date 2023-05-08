@@ -62,7 +62,16 @@ public class IVegetableMgmtServiceImpl implements IVegetableMgmtService {
 		
 		return vegList;
 	}
-
+	
+	@Override
+	public Vegetable viewVegetableByName(String name) throws VegetableException, VegetableNotFoundException {
+		VegetableDAO vDAO = new VegetableDAOImpl();
+		
+		Vegetable veg = vDAO.viewVegetableByNameDB(name);
+		
+		return veg;
+	}
+	
 	@Override
 	public Vegetable viewVegetableById(int vegId) {
 		VegetableDAO vDAO = new VegetableDAOImpl();
@@ -119,5 +128,6 @@ public class IVegetableMgmtServiceImpl implements IVegetableMgmtService {
 		}
 		System.out.println("Vegetable quantity updated");
 	}
+
 
 }
