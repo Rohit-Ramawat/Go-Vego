@@ -226,4 +226,28 @@ public class VegetableDAOImpl implements VegetableDAO {
 		return vegList;
 	}
 
+	@Override
+	public Vegetable viewVegetableByNameDB(String name) throws VegetableException, VegetableNotFoundException {
+		EntityManager em = EmUtils.getEntityManager();
+		Vegetable veg;
+		try {
+			
+			String selectQuery = "SELECT v FROM Vegetable v WHERE v.name = :name";
+			Query query = em.createQuery(selectQuery);
+			query.setParameter("name", name);
+			veg = (Vegetable) query.getSingleResult();
+			
+			if(veg == null ) {
+				throw new VegetableNotFoundException("No any vegetables are available with this name");
+			}
+			
+		} catch (PersistenceException e) {
+			throw new VegetableException("Unable to process request try again"); 
+		}finally {
+			em.close();
+		}
+		
+		return veg;
+	}
+
 }

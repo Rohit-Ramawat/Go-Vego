@@ -1,10 +1,8 @@
 package com.masai.entity;
 
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,8 +10,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class OrderTable {
@@ -22,35 +22,36 @@ public class OrderTable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int orderId;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "customer_id")
 	private Customer customer;
 	
-	@OneToMany(mappedBy = "order")
-	private Set<Vegetable> vegetableList; 
+	@ManyToMany(cascade = CascadeType.MERGE,fetch = FetchType.EAGER)
+	@JoinTable(name = "order_vegetable",joinColumns = {@JoinColumn(referencedColumnName = "orderId")},
+	                                    inverseJoinColumns = {@JoinColumn(referencedColumnName = "vegId")})
+    private Set<Vegetable> vegetableList; 
 	
 	@Column(nullable = false)
 	private double totalAmount;
 	@Column(nullable = false, length = 50)
 	private String status;
 	
-	@OneToMany(mappedBy = "order")
-    private List<BillingDetails> billingDetailsList = new ArrayList<>();
+	@OneToOne(mappedBy = "order",cascade = CascadeType.ALL)
+    private BillingDetails billingDetails;
 
 	public OrderTable() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public OrderTable(int orderId, Customer customer, Set<Vegetable> vegetableList, double totalAmount, String status,
-			List<BillingDetails> billingDetailsList) {
+	public OrderTable(Customer customer, Set<Vegetable> vegetableList, double totalAmount, String status,
+			BillingDetails billingDetails) {
 		super();
-		this.orderId = orderId;
 		this.customer = customer;
 		this.vegetableList = vegetableList;
 		this.totalAmount = totalAmount;
 		this.status = status;
-		this.billingDetailsList = billingDetailsList;
+		this.billingDetails = billingDetails;
 	}
 
 	public int getOrderId() {
@@ -93,21 +94,17 @@ public class OrderTable {
 		this.status = status;
 	}
 
-	public List<BillingDetails> getBillingDetailsList() {
-		return billingDetailsList;
+	public BillingDetails getBillingDetails() {
+		return billingDetails;
 	}
 
-	public void setBillingDetailsList(List<BillingDetails> billingDetailsList) {
-		this.billingDetailsList = billingDetailsList;
+	public void setBillingDetails(BillingDetails billingDetails) {
+		this.billingDetails = billingDetails;
 	}
 
-	
-	
 	@Override
 	public String toString() {
-		return "Order [orderId=" + orderId + ", customer=" + customer + ", vegetableList=" + vegetableList
-				+ ", totalAmount=" + totalAmount + ", status=" + status + ", billingDetailsList=" + billingDetailsList
-				+ "]";
+		return "Order [orderId=" + orderId + ", customer=" + customer + ", totalAmount=" + totalAmount + ", status=" + status;
 	}
 	
 }

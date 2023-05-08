@@ -1,13 +1,32 @@
 package com.masai.ui;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 import com.masai.entity.Address;
+import com.masai.entity.BillingDetails;
 import com.masai.entity.Customer;
+import com.masai.entity.OrderTable;
+import com.masai.entity.Vegetable;
+import com.masai.exception.BillException;
+import com.masai.exception.CustomerAccountDeactivatedException;
 import com.masai.exception.CustomerAlreadyExistException;
 import com.masai.exception.CustomerException;
+import com.masai.exception.OrderException;
+import com.masai.exception.VegetableException;
+import com.masai.exception.VegetableNotFoundException;
+import com.masai.service.IBillingService;
+import com.masai.service.IBillingServiceImpl;
 import com.masai.service.ICustomerService;
 import com.masai.service.ICustomerServiceImpl;
+import com.masai.service.IOrderService;
+import com.masai.service.IOrderServiceImpl;
+import com.masai.service.IVegetableMgmtService;
+import com.masai.service.IVegetableMgmtServiceImpl;
 
 public class CustomerUI {
 
@@ -60,6 +79,15 @@ public class CustomerUI {
 	}
 	
 	public static void displayCustomerMenuUI() {
+		System.out.println("Press 1 for update personal details");
+		System.out.println("Press 2 to view personal details");
+		System.out.println("Press 3 to delete your account");
+		System.out.println("Press 4 to view all vegetables");
+		System.out.println("Press 5 to view all vegetables by category");
+		System.out.println("Press 6 to view all vegetables by name");
+		System.out.println("Press 7 to place an order");
+		System.out.println("Press 8 to view order using id");
+		System.out.println("Press 9 to view all of your order");
 		System.out.println("Press 0 for Logout");
 	}
 	
@@ -71,29 +99,36 @@ public class CustomerUI {
 			choice = sc.nextInt();
     		switch(choice) {
     			case 1:
-    				
+    				updateCustomerUI(sc);
     				break;
     			case 2:
-    				
+					try {
+						viewCustomerDetailsUI(sc);
+					} catch (CustomerAccountDeactivatedException e) {
+						System.out.println(e.getMessage());
+					}
     				break;
     			case 3:
-    				
+    				deleteCustomerUI(sc);
     				break;
     			case 4:
-    				
+    				viewAllVegetableUI(sc);
     				break;	
     			case 5:
-    				
+    				viewAllVegetableByCategoryUI(sc);
     				break;
     			case 6:
-    				
+    				viewAllVegetableByNameUI(sc);
     				break;
     			case 7:
-    				
+    				placeOrderUI(sc);
     				break;	
     			case 8:
-    				
+    				viewOrderByIdUI(sc);
     				break;
+    			case 9:
+    				viewAllOrderUI();
+    				break;	
     			case 0:
     				System.out.println("Logged out");
     				break;
@@ -103,7 +138,270 @@ public class CustomerUI {
     	}while(choice != 0);	
 	}
 
-	public static void userLogin(Scanner sc) {
+	public static void userLogin(Scanner sc) throws CustomerAccountDeactivatedException {
+		System.out.print("Enter userid : ");
+		String userId = sc.next();
+		System.out.print("Enter password : ");
+		String password = sc.next();
+		
+		ICustomerService iCus = new ICustomerServiceImpl();
+		Customer customer = iCus.viewCustomer(userId);
+		
+		if(customer != null && customer.getPassword().equals(password)) {	
+			if(customer.getIsDeleted()==0) {
+				customerMenuUI(sc);        //calling customer menu UI
+			}else {
+				throw new CustomerAccountDeactivatedException("Customer Account is Deactivated");
+			}
+		}else {
+			System.out.println("wrong credentials");
+		}
+	}
+	
+	public static void updateCustomerUI(Scanner sc) {
+		System.out.print("Enter user id : ");
+		String userId = sc.next();
+		System.out.print("Enter password : ");
+		String password = sc.next();
+		ICustomerService iCus = new ICustomerServiceImpl();
+		Customer customer = iCus.viewCustomer(userId);
+		
+		if(customer != null && customer.getPassword().equals(password)) {
+			int choice = 0;
+			do {
+				System.out.println("1. To change password ");
+				System.out.println("2. To change mobile number ");
+				System.out.println("3. To change email ");
+				System.out.println("4. To change name ");
+				System.out.println("5. To change address ");
+				System.out.println("0. for back ");
+				System.out.print("Enter your choice : ");
+				choice = sc.nextInt();
+				
+				switch (choice) {
+				case 1: 
+					System.out.print("Enter new password : ");
+					String newPass = sc.next();
+					iCus.updateCustomerPassword(customer, newPass);
+					break;
+				case 2: 
+					System.out.print("Enter new contact number : ");
+					String newContact = sc.next();
+					iCus.updateCustomerMobileNumber(customer, newContact);
+					break;
+				case 3: 
+					System.out.print("Enter new email : ");
+					String email = sc.next();
+					iCus.updateCustomerEmail(customer, email);
+					break;
+				case 4: 
+					System.out.print("Enter new name : ");
+					String name = sc.next();
+					iCus.updateCustomerName(customer, name);
+					break;
+				case 5:
+					System.out.print("Enter new flatNo : ");
+					String flatNo = sc.next();
+					System.out.print("Enter new buildingName : ");
+					String buildingName = sc.next();
+					System.out.print("Enter new area : ");
+					String area = sc.next();
+					System.out.print("Enter new city : ");
+					String city = sc.next();
+					System.out.print("Enter new state : ");
+					String state = sc.next();
+					System.out.print("Enter new pincode : ");
+					String pincode = sc.next();
+					
+					Address address = new Address(flatNo, buildingName, area, city, state, pincode);
+					
+					iCus.updateAddress(customer,address);
+					
+				case 0: 
+					break;	
+				default:
+					throw new IllegalArgumentException("Invalid Selection : " + choice);
+				}
+			}while(choice != 0);
+		}
+	}
+	
+	public static void viewCustomerDetailsUI(Scanner sc) throws CustomerAccountDeactivatedException {
+		System.out.print("Enter userid : ");
+		String userId = sc.next();
+		System.out.print("Enter password : ");
+		String password = sc.next();
+		
+		ICustomerService iCus = new ICustomerServiceImpl();
+		Customer customer = iCus.viewCustomer(userId);
+		
+		if(customer != null && customer.getPassword().equals(password)) {	
+			if(customer.getIsDeleted()!=0) {
+				throw new CustomerAccountDeactivatedException("Customer Account is Deactivated");
+			}else {
+				System.out.println("Customer Name = "+customer.getName()+" | "+
+						           "Customer userId = "+customer.getUserId()+" | "+
+						           "Customer mobile = "+customer.getMobileNumber()+" | "+
+						           "Customer email = "+customer.getEmailId()+" | "+
+						           "Customer Address = "+customer.getAddress()+" |"
+						           );
+			}
+		}else {
+			System.out.println("wrong credentials");
+		}
+	}
+	
+	public static void deleteCustomerUI(Scanner sc) {
+		System.out.print("Enter userid : ");
+		String userId = sc.next();
+		System.out.print("Enter password : ");
+		String password = sc.next();
+		
+		ICustomerService iCus = new ICustomerServiceImpl();
+		Customer customer = iCus.viewCustomer(userId);
+		
+		if(customer != null && customer.getPassword().equals(password)) {	
+			iCus.removeCustomer(customer);
+			System.exit(1);
+		}else {
+			System.out.println("wrong credentials");
+		}
+	}
+	
+
+	public static void viewAllVegetableByNameUI(Scanner sc) {
+		System.out.print("Enter  name : ");
+		String name = sc.next();
+		
+		IVegetableMgmtService iVeg = new IVegetableMgmtServiceImpl();
+		List<Vegetable> vegetableList;
+		try {
+			vegetableList = iVeg.viewAllVegetablesByName(name);
+			for(Vegetable v : vegetableList) {
+				System.out.println("Vegetable Name : "+v.getName()+" | Vegetable Type : "+v.getType()+
+								 " | Vegetable price : "+v.getPrice()+" /-per Kg"+" | Vegetable Quantity : "+v.getQuantity()+" Kg |");		
+			}
+		} catch (VegetableException | VegetableNotFoundException e) {
+			System.out.println(e.getMessage());
+		}
+		
+	}
+
+	public static void viewAllVegetableByCategoryUI(Scanner sc) {
+		System.out.print("Enter Category name : ");
+		String category = sc.next();
+		
+		IVegetableMgmtService iVeg = new IVegetableMgmtServiceImpl();
+		List<Vegetable> vegetableList;
+		try {
+			vegetableList = iVeg.viewAllVegetableByCategory(category);
+			for(Vegetable v : vegetableList) {
+				System.out.println("Vegetable Name : "+v.getName()+" | Vegetable Type : "+v.getType()+
+								 " | Vegetable price : "+v.getPrice()+" /-per Kg"+" | Vegetable Quantity : "+v.getQuantity()+" Kg |");		
+			}
+		} catch (VegetableException | VegetableNotFoundException e) {
+			System.out.println(e.getMessage());
+		}
+		
+	}
+
+	public static void viewAllVegetableUI(Scanner sc) {
+		IVegetableMgmtService iVeg = new IVegetableMgmtServiceImpl();
+		List<Vegetable> vegetableList;
+		try {
+			vegetableList = iVeg.viewAllVegetavles();
+			for(Vegetable v : vegetableList) {
+				System.out.println("Vegetable Name : "+v.getName()+" | Vegetable Type : "+v.getType()+
+								 "|  Vegetable price : "+v.getPrice()+" /-per Kg"+" | Vegetable Quantity : "+v.getQuantity()+" Kg |");		
+			}
+		} catch (VegetableException | VegetableNotFoundException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	public static void placeOrderUI(Scanner sc) {
+		System.out.print("Enter userid : ");
+		String userId = sc.next();
+		
+		ICustomerService iCus = new ICustomerServiceImpl();
+		Customer customer = iCus.viewCustomer(userId);
+		
+		if(customer != null) {
+			List<Vegetable> vegetableList = getVegetableList(sc);
+			Set<Vegetable> vegList = new HashSet<>(vegetableList);
+			double total = 0;
+			
+			for(Vegetable v:vegList) {
+				total+=v.getPrice()*v.getQuantity();
+			}
+			
+			OrderTable order = new OrderTable(customer, vegList, total, "pending", null);
+			
+			BillingDetails bill = new BillingDetails(order, "online", LocalDateTime.now(), "Pending", customer.getAddress(), customer);
+			
+			order.setBillingDetails(bill);   //<-- setting BillingDetails object inside OrderTable object
+			
+			IOrderService iOrder = new IOrderServiceImpl();
+			try {
+				iOrder.addOrder(order);
+				System.out.println("order with id "+order.getOrderId()+" has been placed successfully");
+				System.out.println("bill for the above order has been created with bill id "+bill.getBillingId());
+			} catch (OrderException e) {
+				System.out.println(e.getMessage());
+			}
+			
+		}
+		
+	}
+	
+	public static List<Vegetable> getVegetableList(Scanner sc){
+		IVegetableMgmtService iVeg = new IVegetableMgmtServiceImpl();
+		
+		System.out.print("Enter number of vegetables you want to purchase : ");
+		int number = sc.nextInt();
+		
+		List<Vegetable> vegList = new ArrayList<>();
+		
+		while(number>0) {
+			
+			System.out.print("Enter vegetable name : ");
+			String name = sc.next();
+			
+			System.out.print("Enter vegetable quantity(in Kg): ");
+			int qty = sc.nextInt();
+			
+			Vegetable vegetable;
+			try {
+				vegetable = iVeg.viewVegetableByName(name);
+				vegetable.setQuantity(qty);
+				vegList.add(vegetable);
+				number--;
+			} catch (VegetableException | VegetableNotFoundException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return vegList;
+	}
+	
+	public static void viewOrderByIdUI(Scanner sc) {
+		System.out.print("Enter order id : ");
+		int orderId = sc.nextInt();
+		
+		IOrderService iOrder = new IOrderServiceImpl();
+		OrderTable order = iOrder.viewOrder(orderId);
+		
+		
+		System.out.println("Order id = "+order.getOrderId()+" | Customer name = "+order.getCustomer().getName()+
+				" | Order status = "+order.getStatus()+" | Order total = "+order.getTotalAmount());
+		
+		Set<Vegetable> vegList = order.getVegetableList();
+		
+		for(Vegetable v : vegList) {
+			System.out.println("Vegetable name = "+v.getName()+" | Price = "+v.getPrice()+" | Quantity = "+v.getQuantity());
+		}
+	}
+
+	public static void viewAllOrderUI() {
 		
 		
 	}

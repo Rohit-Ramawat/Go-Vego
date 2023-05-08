@@ -18,4 +18,5 @@ public interface IVegetableMgmtService {
 	public void updateVegetableType(Vegetable vegetable, String type);
 	public void updateVegetablePrice(Vegetable vegetable, double price);
 	public void updateVegetableQty(Vegetable vegetable, int quantity);
+	public Vegetable viewVegetableByName(String name)throws VegetableException, VegetableNotFoundException;
 }

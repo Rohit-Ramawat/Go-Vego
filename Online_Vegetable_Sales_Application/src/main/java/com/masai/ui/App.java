@@ -3,6 +3,7 @@ package com.masai.ui;
 import java.util.Scanner;
 
 import com.masai.exception.AdminException;
+import com.masai.exception.CustomerAccountDeactivatedException;
 
 public class App 
 {	
@@ -37,7 +38,11 @@ public class App
     				AdminUI.adminApprovalUI(sc);
     				break;	
     			case 4:
-    				CustomerUI.userLogin(sc);
+					try {
+						CustomerUI.userLogin(sc);
+					} catch (CustomerAccountDeactivatedException e) {
+						System.out.println(e.getMessage());
+					}
     				break;
     			case 5:
     				CustomerUI.customerRegistration(sc);
@@ -49,6 +54,7 @@ public class App
     				System.out.println("Invalid Selection : "+choice);
              }
         }while(choice != 0);
+        
         
         sc.close();
       }  

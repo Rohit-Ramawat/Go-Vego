@@ -135,7 +135,8 @@ public class AdminUI {
 			}else {
 				throw new AdminException("Admin is not approved yet");
 			}
-			
+		}else {
+			System.out.println("wrong password");
 		}
 	}
 	
@@ -294,8 +295,8 @@ public class AdminUI {
 		try {
 			vegetableList = iVeg.viewAllVegetavles();
 			for(Vegetable v : vegetableList) {
-				System.out.println("Vegetable Name : "+v.getName()+", Vegetable Type : "+v.getType()+
-								 ", Vegetable price : "+v.getPrice()+" /-per Kg"+", Vegetable Quantity : "+v.getQuantity()+" Kg");		
+				System.out.println("Vegetable Name : "+v.getName()+" | Vegetable Type : "+v.getType()+
+								 "|  Vegetable price : "+v.getPrice()+" /-per Kg"+" | Vegetable Quantity : "+v.getQuantity()+" Kg |");		
 			}
 		} catch (VegetableException | VegetableNotFoundException e) {
 			System.out.println(e.getMessage());
@@ -311,8 +312,8 @@ public class AdminUI {
 		try {
 			vegetableList = iVeg.viewAllVegetableByCategory(category);
 			for(Vegetable v : vegetableList) {
-				System.out.println("Vegetable Name : "+v.getName()+", Vegetable Type : "+v.getType()+
-								 ", Vegetable price : "+v.getPrice()+" /-per Kg"+", Vegetable Quantity : "+v.getQuantity()+" Kg");		
+				System.out.println("Vegetable Name : "+v.getName()+" | Vegetable Type : "+v.getType()+
+								 " | Vegetable price : "+v.getPrice()+" /-per Kg"+" | Vegetable Quantity : "+v.getQuantity()+" Kg |");		
 			}
 		} catch (VegetableException | VegetableNotFoundException e) {
 			System.out.println(e.getMessage());
@@ -329,8 +330,8 @@ public class AdminUI {
 		try {
 			vegetableList = iVeg.viewAllVegetablesByName(name);
 			for(Vegetable v : vegetableList) {
-				System.out.println("Vegetable Name : "+v.getName()+", Vegetable Type : "+v.getType()+
-								 ", Vegetable price : "+v.getPrice()+" /-per Kg"+", Vegetable Quantity : "+v.getQuantity()+" Kg");		
+				System.out.println("Vegetable Name : "+v.getName()+" | Vegetable Type : "+v.getType()+
+								 " | Vegetable price : "+v.getPrice()+" /-per Kg"+" | Vegetable Quantity : "+v.getQuantity()+" Kg |");		
 			}
 		} catch (VegetableException | VegetableNotFoundException e) {
 			System.out.println(e.getMessage());
