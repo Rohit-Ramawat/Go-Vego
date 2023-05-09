@@ -15,14 +15,19 @@ public class App
         int choice = 0;
         
         do {
-        	System.out.println("1. Admin Login");
-            System.out.println("2. Adimn Registration");
-            System.out.println("3. Adimn Approval");
-    		System.out.println("4. Customer Login");
-    		System.out.println("5. Customer Registration");
-    		System.out.println("0. Exit");
-    		System.out.print("Enter Selection : ");
+        	System.out.println(" --------------------------------------------");
+        	System.out.println("|Welcome to Online Vegetable Sale Application|");
+        	System.out.println(" --------------------------------------------");
+        	System.out.println("|            1. Admin Login                  |");
+            System.out.println("|            2. Adimn Registration           |");
+            System.out.println("|            3. Adimn Approval               |");
+    		System.out.println("|            4. Customer Login               |");
+    		System.out.println("|            5. Customer Registration        |");
+    		System.out.println("|            0. Exit                         |");
+    		System.out.println(" --------------------------------------------");
+    		System.out.print("|  Enter Selection : ");
     		choice = sc.nextInt();
+    		System.out.println(" --------------------------------------------");
     		switch(choice) {
     			case 1:
     				try {
@@ -48,7 +53,7 @@ public class App
     				CustomerUI.customerRegistration(sc);
     				break;
     			case 0:
-    				System.out.println("Thankyou for using the our servies");
+    				System.out.println("Thankyou for using our servies");
     				break;
     			default:
     				System.out.println("Invalid Selection : "+choice);

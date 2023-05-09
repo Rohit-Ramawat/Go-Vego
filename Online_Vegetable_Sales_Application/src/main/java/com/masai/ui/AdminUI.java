@@ -4,27 +4,34 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.masai.entity.Admin;
+import com.masai.entity.Customer;
 import com.masai.entity.Vegetable;
 import com.masai.exception.AdminException;
 import com.masai.exception.VegetableException;
 import com.masai.exception.VegetableNotFoundException;
 import com.masai.service.IAdminService;
 import com.masai.service.IAdminServiceImpl;
+import com.masai.service.ICustomerService;
+import com.masai.service.ICustomerServiceImpl;
 import com.masai.service.IVegetableMgmtService;
 import com.masai.service.IVegetableMgmtServiceImpl;
 
 public class AdminUI {
 	
 	public static void displayAdminMenuUI() {
-		System.out.println("Press 1 for update details");
-		System.out.println("Press 2 to delete your account");
-		System.out.println("Press 3 to add vegetable");
-		System.out.println("Press 4 to update vegetable");
-		System.out.println("Press 5 to remove vegetable");
-		System.out.println("Press 6 to view all vegetables");
-		System.out.println("Press 7 to view all vegetables by category");
-		System.out.println("Press 8 to view all vegetables by name");
-		System.out.println("Press 0 for Logout");
+		System.out.println(" ---------------------------------------------");
+		System.out.println("|                 ADMIN MENU                  |");
+		System.out.println(" ---------------------------------------------");
+		System.out.println("|       1. Update details                     |");
+		System.out.println("|       2. Delete your account                |");
+		System.out.println("|       3. Add vegetable                      |");
+		System.out.println("|       4. Update vegetable                   |");
+		System.out.println("|       5. Remove vegetable                   |");
+		System.out.println("|       6. View all vegetables                |");
+		System.out.println("|       7. View all vegetables by category    |");
+		System.out.println("|       8. View all vegetables by name        |");
+		System.out.println("|       0. Logout                             |");
+		System.out.println(" ---------------------------------------------");
 	}
 	
 	public static void adminMenuUI(Scanner sc) {
@@ -33,6 +40,7 @@ public class AdminUI {
 			displayAdminMenuUI();
 			System.out.print("Enter selection : ");
 			choice = sc.nextInt();
+			System.out.println("---------------------------------------------");
     		switch(choice) {
     			case 1:
     				updateAdminUI(sc);
@@ -58,6 +66,9 @@ public class AdminUI {
     			case 8:
     				viewAllVegetableByNameUI(sc);
     				break;
+//    			case 9:
+//    				viewAllCustomersUI();
+//    				break;
     			case 0:
     				System.out.println("Logged out");
     				break;
@@ -161,7 +172,7 @@ public class AdminUI {
 	}
 
 	public static void updateAdminUI(Scanner sc) {
-		System.out.print("Enter user id : ");
+		System.out.print("Re-enter user id : ");
 		String userId = sc.next();
 		
 		IAdminService iAdmin = new IAdminServiceImpl();
@@ -170,13 +181,16 @@ public class AdminUI {
 		if(admin != null ) {
 			int choice = 0;
 			do {
+				System.out.println("----------------------------");
 				System.out.println("1. To change password ");
 				System.out.println("2. To change contact number ");
 				System.out.println("3. To change email ");
 				System.out.println("4. To change name ");
 				System.out.println("0. for back ");
+				System.out.println("----------------------------");
 				System.out.print("Enter your choice : ");
 				choice = sc.nextInt();
+				System.out.println("----------------------------");
 				
 				switch (choice) {
 				case 1: 
@@ -238,13 +252,16 @@ public class AdminUI {
 		if(vegetable != null ) {
 			int choice = 0;
 			do {
+				System.out.println("-----------------------");
 				System.out.println("1. To change name ");
 				System.out.println("2. To change type ");
 				System.out.println("3. To change price ");
 				System.out.println("4. To change quantity ");
 				System.out.println("0. for back ");
+				System.out.println("-----------------------");
 				System.out.print("Enter your choice : ");
 				choice = sc.nextInt();
+				System.out.println("-----------------------");
 				
 				switch (choice) {
 				case 1: 
@@ -294,10 +311,12 @@ public class AdminUI {
 		List<Vegetable> vegetableList;
 		try {
 			vegetableList = iVeg.viewAllVegetavles();
+			System.out.println("-----------------------------------------------------------------------------");
 			for(Vegetable v : vegetableList) {
-				System.out.println("Vegetable Name : "+v.getName()+" | Vegetable Type : "+v.getType()+
-								 "|  Vegetable price : "+v.getPrice()+" /-per Kg"+" | Vegetable Quantity : "+v.getQuantity()+" Kg |");		
+				System.out.println("| Vegetable Name : "+v.getName()+"  Type : "+v.getType()+
+								 "  Price : "+v.getPrice()+" /-Kg"+"  Quantity : "+v.getQuantity()+" Kg      ");		
 			}
+			System.out.println("-----------------------------------------------------------------------------");
 		} catch (VegetableException | VegetableNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
@@ -311,10 +330,12 @@ public class AdminUI {
 		List<Vegetable> vegetableList;
 		try {
 			vegetableList = iVeg.viewAllVegetableByCategory(category);
+			System.out.println("-----------------------------------------------------------------------------");
 			for(Vegetable v : vegetableList) {
-				System.out.println("Vegetable Name : "+v.getName()+" | Vegetable Type : "+v.getType()+
-								 " | Vegetable price : "+v.getPrice()+" /-per Kg"+" | Vegetable Quantity : "+v.getQuantity()+" Kg |");		
+				System.out.println("| Vegetable Name : "+v.getName()+"  Type : "+v.getType()+
+								 "  Price : "+v.getPrice()+" /-Kg"+"  Quantity : "+v.getQuantity()+" Kg      ");		
 			}
+			System.out.println("-----------------------------------------------------------------------------");
 		} catch (VegetableException | VegetableNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
@@ -329,15 +350,28 @@ public class AdminUI {
 		List<Vegetable> vegetableList;
 		try {
 			vegetableList = iVeg.viewAllVegetablesByName(name);
+			System.out.println("-----------------------------------------------------------------------------");
 			for(Vegetable v : vegetableList) {
-				System.out.println("Vegetable Name : "+v.getName()+" | Vegetable Type : "+v.getType()+
-								 " | Vegetable price : "+v.getPrice()+" /-per Kg"+" | Vegetable Quantity : "+v.getQuantity()+" Kg |");		
+				System.out.println("| Vegetable Name : "+v.getName()+"  Type : "+v.getType()+
+								 "  Price : "+v.getPrice()+" /-Kg"+"  Quantity : "+v.getQuantity()+" Kg      ");		
 			}
+			System.out.println("-----------------------------------------------------------------------------");
 		} catch (VegetableException | VegetableNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
 	
 	}
+	
+//	public static void viewAllCustomersUI() {
+//		ICustomerService iCust = new ICustomerServiceImpl();
+//	 	List<Customer> customers = iCust.viewAllCustomer();
+//	 	
+//	 	if(customers != null) {
+//	 		for(Customer c : customers) {
+//	 			System.out.println(c);
+//	 		}
+//	 	}
+//	}
 }
 
 

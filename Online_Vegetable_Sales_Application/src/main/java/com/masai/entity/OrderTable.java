@@ -13,9 +13,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedNativeQuery;
 import jakarta.persistence.OneToOne;
 
 @Entity
+@NamedNativeQuery(name = "orderByCustomerID",query = "SELECT * FROM ordertable WHERE customer_id = ?",resultClass = OrderTable.class)
 public class OrderTable {
 	
 	@Id

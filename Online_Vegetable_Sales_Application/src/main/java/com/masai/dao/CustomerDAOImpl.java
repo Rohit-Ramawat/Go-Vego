@@ -1,5 +1,9 @@
 package com.masai.dao;
 
+import java.util.List;
+
+import org.hibernate.Hibernate;
+
 import com.masai.entity.Address;
 import com.masai.entity.Customer;
 import com.masai.exception.CustomerAlreadyExistException;
@@ -9,6 +13,7 @@ import com.masai.exception.CustomerNotFoundException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.PersistenceException;
+import jakarta.persistence.Query;
 
 public class CustomerDAOImpl implements CustomerDAO {
 
@@ -52,6 +57,34 @@ public class CustomerDAOImpl implements CustomerDAO {
 		return customer;
 	}
 
+	@Override
+	public List<Customer> viewAllCustomerDB() throws CustomerNotFoundException, CustomerException {
+		EntityManager em = EmUtils.getEntityManager();
+		List<Customer> customerList = null;
+		
+		try {
+			String selectQuery = "SELECT c FROM Customer c JOIN FETCH c.orders";
+		        Query query = em.createQuery(selectQuery);
+		        customerList = query.getResultList();
+
+	        if (customerList.isEmpty() || customerList == null) {
+	            throw new CustomerNotFoundException("No any customer have registered yet");
+	        }
+
+	        // Initialize the orders collection before closing the EntityManager
+	        for (Customer customer : customerList) {
+	            Hibernate.initialize(customer.getOrders());
+	        }
+			
+		} catch (PersistenceException e) {
+			throw new CustomerException("Unable to process request try again"); 
+		}finally {
+			em.close();
+		}
+	
+		return customerList;
+	}
+	
 	@Override
 	public void updateCustomerPasswordDB(Customer customer, String newPass) throws CustomerException {
 		EntityManager em = EmUtils.getEntityManager();
@@ -165,6 +198,8 @@ public class CustomerDAOImpl implements CustomerDAO {
 		}
 		
 	}
+
+	
 	
 	
 

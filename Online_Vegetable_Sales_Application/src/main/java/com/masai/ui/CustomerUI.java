@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
+import com.masai.dao.VegetableDAO;
+import com.masai.dao.VegetableDAOImpl;
 import com.masai.entity.Address;
 import com.masai.entity.BillingDetails;
 import com.masai.entity.Customer;
@@ -17,6 +19,7 @@ import com.masai.exception.CustomerAccountDeactivatedException;
 import com.masai.exception.CustomerAlreadyExistException;
 import com.masai.exception.CustomerException;
 import com.masai.exception.OrderException;
+import com.masai.exception.OrderNotFoundException;
 import com.masai.exception.VegetableException;
 import com.masai.exception.VegetableNotFoundException;
 import com.masai.service.IBillingService;
@@ -79,16 +82,21 @@ public class CustomerUI {
 	}
 	
 	public static void displayCustomerMenuUI() {
-		System.out.println("Press 1 for update personal details");
-		System.out.println("Press 2 to view personal details");
-		System.out.println("Press 3 to delete your account");
-		System.out.println("Press 4 to view all vegetables");
-		System.out.println("Press 5 to view all vegetables by category");
-		System.out.println("Press 6 to view all vegetables by name");
-		System.out.println("Press 7 to place an order");
-		System.out.println("Press 8 to view order using id");
-		System.out.println("Press 9 to view all of your order");
-		System.out.println("Press 0 for Logout");
+		System.out.println(" ---------------------------------------------");
+		System.out.println("|               CUSTOMER MENU                 |");
+		System.out.println(" ---------------------------------------------");
+		System.out.println("|     1. Update personal details              |");
+		System.out.println("|     2. View personal details                |");
+		System.out.println("|     3. Delete your account                  |");
+		System.out.println("|     4. View all vegetables                  |");
+		System.out.println("|     5. View all vegetables by category      |");
+		System.out.println("|     6. View all vegetables by name          |");
+		System.out.println("|     7. Place an order                       |");
+		System.out.println("|     8. View order using id                  |");
+		System.out.println("|     9. View all of your order               |");
+		System.out.println("|    10. Cancel order                         |");
+		System.out.println("|     0. Logout                               |");
+		System.out.println(" ---------------------------------------------");
 	}
 	
 	public static void customerMenuUI(Scanner sc) {
@@ -97,6 +105,7 @@ public class CustomerUI {
 			displayCustomerMenuUI();
 			System.out.print("Enter selection : ");
 			choice = sc.nextInt();
+			System.out.println(" ---------------------------------------------");
     		switch(choice) {
     			case 1:
     				updateCustomerUI(sc);
@@ -127,8 +136,10 @@ public class CustomerUI {
     				viewOrderByIdUI(sc);
     				break;
     			case 9:
-    				viewAllOrderUI();
-    				break;	
+    				viewAllOrderUI(sc);
+    				break;
+    			case 10:
+    				cancelOrderUI(sc);
     			case 0:
     				System.out.println("Logged out");
     				break;
@@ -159,9 +170,9 @@ public class CustomerUI {
 	}
 	
 	public static void updateCustomerUI(Scanner sc) {
-		System.out.print("Enter user id : ");
+		System.out.print("Re-enter user id : ");
 		String userId = sc.next();
-		System.out.print("Enter password : ");
+		System.out.print("Re-enter password : ");
 		String password = sc.next();
 		ICustomerService iCus = new ICustomerServiceImpl();
 		Customer customer = iCus.viewCustomer(userId);
@@ -169,14 +180,17 @@ public class CustomerUI {
 		if(customer != null && customer.getPassword().equals(password)) {
 			int choice = 0;
 			do {
+				System.out.println("---------------------------");
 				System.out.println("1. To change password ");
 				System.out.println("2. To change mobile number ");
 				System.out.println("3. To change email ");
 				System.out.println("4. To change name ");
 				System.out.println("5. To change address ");
 				System.out.println("0. for back ");
+				System.out.println("---------------------------");
 				System.out.print("Enter your choice : ");
 				choice = sc.nextInt();
+				System.out.println("---------------------------");
 				
 				switch (choice) {
 				case 1: 
@@ -239,12 +253,12 @@ public class CustomerUI {
 			if(customer.getIsDeleted()!=0) {
 				throw new CustomerAccountDeactivatedException("Customer Account is Deactivated");
 			}else {
-				System.out.println("Customer Name = "+customer.getName()+" | "+
-						           "Customer userId = "+customer.getUserId()+" | "+
-						           "Customer mobile = "+customer.getMobileNumber()+" | "+
-						           "Customer email = "+customer.getEmailId()+" | "+
-						           "Customer Address = "+customer.getAddress()+" |"
-						           );
+				System.out.println("Customer Name    = "+customer.getName());
+				System.out.println("Customer userId  = "+customer.getUserId());
+				System.out.println("Customer mobile  = "+customer.getMobileNumber());
+				System.out.println("Customer email   = "+customer.getEmailId());
+				System.out.println("Customer Address = "+customer.getAddress());
+						           
 			}
 		}else {
 			System.out.println("wrong credentials");
@@ -275,12 +289,14 @@ public class CustomerUI {
 		
 		IVegetableMgmtService iVeg = new IVegetableMgmtServiceImpl();
 		List<Vegetable> vegetableList;
+		System.out.println("-----------------------------------------------------------------------------");
 		try {
 			vegetableList = iVeg.viewAllVegetablesByName(name);
 			for(Vegetable v : vegetableList) {
-				System.out.println("Vegetable Name : "+v.getName()+" | Vegetable Type : "+v.getType()+
-								 " | Vegetable price : "+v.getPrice()+" /-per Kg"+" | Vegetable Quantity : "+v.getQuantity()+" Kg |");		
+				System.out.println("| Vegetable Name : "+v.getName()+"  Type : "+v.getType()+
+						 "  Price : "+v.getPrice()+" /-Kg"+"  Quantity : "+v.getQuantity()+" Kg      ");	
 			}
+			System.out.println("-----------------------------------------------------------------------------");
 		} catch (VegetableException | VegetableNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
@@ -293,12 +309,14 @@ public class CustomerUI {
 		
 		IVegetableMgmtService iVeg = new IVegetableMgmtServiceImpl();
 		List<Vegetable> vegetableList;
+		System.out.println("-----------------------------------------------------------------------------");
 		try {
 			vegetableList = iVeg.viewAllVegetableByCategory(category);
 			for(Vegetable v : vegetableList) {
-				System.out.println("Vegetable Name : "+v.getName()+" | Vegetable Type : "+v.getType()+
-								 " | Vegetable price : "+v.getPrice()+" /-per Kg"+" | Vegetable Quantity : "+v.getQuantity()+" Kg |");		
+				System.out.println("| Vegetable Name : "+v.getName()+"  Type : "+v.getType()+
+						 "  Price : "+v.getPrice()+" /-Kg"+"  Quantity : "+v.getQuantity()+" Kg      ");		
 			}
+			System.out.println("-----------------------------------------------------------------------------");
 		} catch (VegetableException | VegetableNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
@@ -310,10 +328,13 @@ public class CustomerUI {
 		List<Vegetable> vegetableList;
 		try {
 			vegetableList = iVeg.viewAllVegetavles();
+			
+			System.out.println("-----------------------------------------------------------------------------");
 			for(Vegetable v : vegetableList) {
-				System.out.println("Vegetable Name : "+v.getName()+" | Vegetable Type : "+v.getType()+
-								 "|  Vegetable price : "+v.getPrice()+" /-per Kg"+" | Vegetable Quantity : "+v.getQuantity()+" Kg |");		
+				System.out.println("| Vegetable Name : "+v.getName()+"  Type : "+v.getType()+
+								 "  Price : "+v.getPrice()+" /-Kg"+"  Quantity : "+v.getQuantity()+" Kg      ");		
 			}
+			System.out.println("-----------------------------------------------------------------------------");
 		} catch (VegetableException | VegetableNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
@@ -335,15 +356,20 @@ public class CustomerUI {
 				total+=v.getPrice()*v.getQuantity();
 			}
 			
-			OrderTable order = new OrderTable(customer, vegList, total, "pending", null);
+			OrderTable order = new OrderTable(customer, vegList, total, "Pending", null);
 			
-			BillingDetails bill = new BillingDetails(order, "online", LocalDateTime.now(), "Pending", customer.getAddress(), customer);
+			BillingDetails bill = new BillingDetails(order, "Online", LocalDateTime.now(), "Pending", customer.getAddress(), customer);
 			
 			order.setBillingDetails(bill);   //<-- setting BillingDetails object inside OrderTable object
 			
 			IOrderService iOrder = new IOrderServiceImpl();
 			try {
 				iOrder.addOrder(order);
+				
+				Set<Vegetable> vegSet = order.getVegetableList();  //<--for updating quantity in database vegetable table
+				updateVegetableQtyUI(vegSet);
+				
+				//For customer
 				System.out.println("order with id "+order.getOrderId()+" has been placed successfully");
 				System.out.println("bill for the above order has been created with bill id "+bill.getBillingId());
 			} catch (OrderException e) {
@@ -390,19 +416,72 @@ public class CustomerUI {
 		IOrderService iOrder = new IOrderServiceImpl();
 		OrderTable order = iOrder.viewOrder(orderId);
 		
-		
-		System.out.println("Order id = "+order.getOrderId()+" | Customer name = "+order.getCustomer().getName()+
-				" | Order status = "+order.getStatus()+" | Order total = "+order.getTotalAmount());
-		
-		Set<Vegetable> vegList = order.getVegetableList();
-		
-		for(Vegetable v : vegList) {
-			System.out.println("Vegetable name = "+v.getName()+" | Price = "+v.getPrice()+" | Quantity = "+v.getQuantity());
+		if(order != null) {
+			System.out.println("Order id = "+order.getOrderId()+" | Customer name = "+order.getCustomer().getName()+
+					" | Order status = "+order.getStatus()+" | Order total = "+order.getTotalAmount());
+			
+			Set<Vegetable> vegList = order.getVegetableList();
+			
+			for(Vegetable v : vegList) {
+				System.out.println("Vegetable name = "+v.getName()+" | Price = "+v.getPrice());
+			}
 		}
 	}
 
-	public static void viewAllOrderUI() {
+	public static void viewAllOrderUI(Scanner sc) {
+		System.out.println("Re-Enter your user id");
+		String userId = sc.next();
+		IOrderService iOrder = new IOrderServiceImpl();
+		List<OrderTable> orderList = iOrder.viewAllOrders(userId);
 		
+		for(OrderTable order : orderList) {
+				
+			System.out.println("Order id = "+order.getOrderId()+" | Customer name = "+order.getCustomer().getName()+
+					" | Order status = "+order.getStatus()+" | Order total = "+order.getTotalAmount());
+			
+			Set<Vegetable> vegList = order.getVegetableList();
+			
+			for(Vegetable v : vegList) {
+				System.out.println("Vegetable name = "+v.getName()+" | Price = "+v.getPrice());
+			}
+
+		}
+		
+	}
+	
+	//For Database Vegetable Quantity Synchronization after purchasing
+	public static void updateVegetableQtyUI(Set<Vegetable> vegSet) {
+		IVegetableMgmtService iVeg = new IVegetableMgmtServiceImpl();
+		Vegetable vegetable;
+		for(Vegetable v : vegSet) {
+			try {
+				vegetable = iVeg.viewVegetableByName(v.getName());      //<--fetching vegetable from DB
+				
+				int newQty = vegetable.getQuantity()-v.getQuantity();   //<--updated Qty
+				
+				iVeg.updateVegetableQty(v, newQty);                     //calling method to update Qty
+				
+			} catch (VegetableException | VegetableNotFoundException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+	}
+	
+
+	public static void cancelOrderUI(Scanner sc) {
+		System.out.print("Enter your user id : ");
+	    String userId = sc.next();
+
+	    System.out.print("Enter the order id to cancel : ");
+	    int orderId = sc.nextInt();
+
+	    IOrderService iOrder = new IOrderServiceImpl();
+	    try {
+	        iOrder.cancelOrder(userId, orderId);
+	        System.out.println("Order cancelled successfully.");
+	    } catch (OrderNotFoundException | OrderException e) {
+	        System.out.println(e.getMessage());
+	    }
 		
 	}
 }
