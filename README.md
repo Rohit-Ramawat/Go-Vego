@@ -1,5 +1,7 @@
 # Online Vegetable Sales Application 
 #### This application is designed to serve the purpose of online ordering of vegetables and manageble by multiple admins.
+## ER Daigram 
+![SB101_Project_ER_Daigram](https://user-images.githubusercontent.com/119414002/237061821-11c0ade6-1c42-4364-a68c-fac5974219cb.png)
 
 ## Users of this application: 
 - Administrator 
@@ -33,6 +35,8 @@
 
 ## Tech-Stacks:
 - Core Java
+- MySQL
+- Hibernate
 ## IDE:
 - STS
 ## Authors:
