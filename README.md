@@ -17,7 +17,7 @@
 - Can view all vegetables by category.
 - Can view all vegetables by name.
 
-## The roles of the Passenger are:
+## The roles of the Customer are:
 - login.
 - sign up.
 - Can update personal details.
