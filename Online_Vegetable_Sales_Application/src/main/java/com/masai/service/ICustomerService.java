@@ -11,7 +11,7 @@ public interface ICustomerService {
 	public void addCustomer(Customer customer) throws CustomerAlreadyExistException, CustomerException;
 	public void removeCustomer(Customer customer);
 	public Customer viewCustomer(String userId);
-	public List<Customer> viewAllCustomer(String loc);
+	public List<Customer> viewAllCustomer();
 	public void updateCustomerPassword(Customer customer, String newPass);
 	public void updateCustomerMobileNumber(Customer customer, String newContact);
 	public void updateCustomerEmail(Customer customer, String email);

@@ -41,9 +41,16 @@ public class ICustomerServiceImpl implements ICustomerService {
 	}
 
 	@Override
-	public List<Customer> viewAllCustomer(String loc) {
+	public List<Customer> viewAllCustomer() {
+		CustomerDAO cDAO = new CustomerDAOImpl();
 		
-		return null;
+		List<Customer> customerList=null;
+		try {
+			customerList = cDAO.viewAllCustomerDB();
+		} catch (CustomerNotFoundException | CustomerException e) {
+			System.out.println(e.getMessage());
+		}
+		return customerList;
 	}
 
 	@Override

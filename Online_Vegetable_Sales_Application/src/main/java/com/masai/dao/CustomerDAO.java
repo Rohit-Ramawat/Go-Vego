@@ -1,5 +1,7 @@
 package com.masai.dao;
 
+import java.util.List;
+
 import com.masai.entity.Address;
 import com.masai.entity.Customer;
 import com.masai.exception.CustomerAlreadyExistException;
@@ -10,6 +12,8 @@ public interface CustomerDAO {
 	public void addCustomerDB(Customer customer) throws CustomerAlreadyExistException, CustomerException;
 
 	public Customer viewCustomerDB(String userId) throws CustomerNotFoundException;
+	
+	public List<Customer> viewAllCustomerDB() throws CustomerNotFoundException, CustomerException;
 
 	public void updateCustomerPasswordDB(Customer customer, String newPass) throws CustomerException;
 
