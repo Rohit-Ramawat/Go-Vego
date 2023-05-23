@@ -15,7 +15,7 @@
 - Can add vegetables.
 - Can update vegetable details like name,price,quantity etc.
 - Can delete vegetables.
-- Can view view all vegetables.
+- Can view all vegetables.
 - Can view all vegetables by category.
 - Can view all vegetables by name.
 
